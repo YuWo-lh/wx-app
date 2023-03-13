@@ -1,3 +1,4 @@
+const app = getApp()
 Page({
 	data: {
 		mobile: '15656565656', // 表单数据-手机号
@@ -31,8 +32,26 @@ Page({
 	verifyMobile() {
 		const reg = /^[1][3-8][0-9]{9}$/
 		const valid = reg.test(this.data.mobile.trim())
-		console.log(valid)
 		if (!valid) wx.utils.toast('请输入正确的手机号码')
 		return valid
+	},
+	// 验证验证码
+	verifyCode() {
+		const reg = /^\d{6}$/
+		const valid = reg.test(this.data.code.trim())
+		if (!valid) wx.utils.toast('您输入的验证码格式不正确')
+		return valid
+	},
+	// 确认登录按钮
+	async submitLogin() {
+		if (!this.verifyMobile()) return
+		if (!this.verifyCode()) return
+		const mobile = this.data.mobile.trim()
+		const code = this.data.code.trim()
+		const { resultCode, data } = await wx.http.post('/login', { mobile, code })
+		if (resultCode !== 10000) return wx.utils.toast('登录失败，请检查验证码是否正确')
+		const token = 'Bener ' + data.token
+		wx.setStorageSyne('token', token)
+		app.token = token
 	}
 })
