@@ -17,7 +17,7 @@ App({
 			key,
 			// 获取成功执行的函数
 			success: ({ data }) => {
-				console.log(data)
+				// console.log(data) // 获取到的token
 				this.token = data
 			}
 			// 获取失败执行的函数
