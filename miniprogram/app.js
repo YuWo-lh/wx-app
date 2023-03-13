@@ -7,7 +7,6 @@ App({
 	},
 	// 小程序启动时执行,仅执行一次
 	onLaunch() {
-		console.log('小程序启动')
 		// 读取token
 		this.getToken('token')
 	},
