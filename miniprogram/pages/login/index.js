@@ -1,5 +1,7 @@
 Page({
 	data: {
+		mobile: '15656565656', // 表单数据-手机号
+		code: '', // 表单数据-验证码
 		countDownVisible: false // 控制是否显示倒计时
 	},
 
@@ -14,9 +16,23 @@ Page({
 	},
 
 	// 点击 <获取验证码> 按钮执行的函数
-	getCode() {
+	async getCode() {
+		if (!this.verifyMobile()) return // 验证手机号
 		this.setData({
 			countDownVisible: true // 显示倒计时
 		})
+		const { code, data } = await wx.http.get('/code', { mobile: this.data.mobile.trim() })
+		if (code !== 10000) return wx.utils.toast('获取验证码失败，请稍后重试')
+		wx.utils.toast('验证码已发送，请注意查看')
+		this.setData({ code: data.code }) // 数据绑定，验证码直接填入输入框
+	},
+
+	// 验证手机号
+	verifyMobile() {
+		const reg = /^[1][3-8][0-9]{9}$/
+		const valid = reg.test(this.data.mobile.trim())
+		console.log(valid)
+		if (!valid) wx.utils.toast('请输入正确的手机号码')
+		return valid
 	}
 })
