@@ -1,9 +1,11 @@
 Page({
-  async onLoad() {
-    wx.utils.toast('Hello')
-    const { code, data } = await wx.http.get('/announcement')
-    // console.log(code, data)
-    if (code !== 10000) return wx.utils.toast()
-    console.log(data)
-  },
+	data: {
+		afficheList: ''
+	},
+	async onLoad() {
+		const { code, data } = await wx.http.get('/announcement')
+		if (code !== 10000) return wx.utils.toast('获取数据失败，请稍后重试')
+		console.log(data)
+		this.setData({ afficheList: data })
+	}
 })
