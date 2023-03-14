@@ -22,6 +22,8 @@ http.intercept.request = (params) => {
 // 配置响应拦截器
 http.intercept.response = (res) => {
 	// 过滤接口返回的数据
+	console.log(res)
+
 	return res.data
 }
 

@@ -54,7 +54,7 @@ Page({
 		const code = this.data.code.trim()
 		const { code: resultCode, data } = await wx.http.post('/login', { mobile, code })
 		if (resultCode !== 10000) return wx.utils.toast('登录失败，请检查验证码是否正确')
-		app.setToken(data.token)
+		app.setToken(data.token, data.refreshToken)
 
 		// 重定向至登录前的页面
 		// console.log(this.data.redirectURL)
