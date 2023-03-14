@@ -5,10 +5,15 @@ Page({
 		code: '', // 表单数据-验证码
 		countDownVisible: false // 控制是否显示倒计时
 	},
+	onLoad({ redirectURL }) {
+		this.setData({
+			redirectURL
+		})
+	},
 
 	// 倒计时变化执行的函数
 	countDownChange(ev) {
-		console.log(ev)
+		// console.log(ev)
 		this.setData({
 			timeData: ev.detail, // 倒计时的数据（倒计时的时间：时分秒等）
 			// 当倒计时分钟数等于1（起始时间1分钟） 或者 秒数大于0 ，显示倒计时，不满足条件则为关闭倒计时
@@ -44,14 +49,17 @@ Page({
 	},
 	// 确认登录按钮
 	async submitLogin() {
-		if (!this.verifyMobile()) return
-		if (!this.verifyCode()) return
+		if (!this.verifyMobile() || !this.verifyCode()) return
 		const mobile = this.data.mobile.trim()
 		const code = this.data.code.trim()
-		const { resultCode, data } = await wx.http.post('/login', { mobile, code })
+		const { code: resultCode, data } = await wx.http.post('/login', { mobile, code })
 		if (resultCode !== 10000) return wx.utils.toast('登录失败，请检查验证码是否正确')
-		const token = 'Bener ' + data.token
-		wx.setStorageSyne('token', token)
-		app.token = token
+		app.setToken(data.token)
+
+		// 重定向至登录前的页面
+		// console.log(this.data.redirectURL)
+		wx.redirectTo({
+			url: this.data.redirectURL
+		})
 	}
 })

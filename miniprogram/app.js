@@ -19,10 +19,12 @@ App({
 				// console.log(data) // 获取到的token
 				this.token = data
 			}
-			// 获取失败执行的函数
-			// fail: (err) => {
-			// 	console.log(err, '~~~获取token失败')
-			// }
 		})
+	},
+	// 存入token的方法
+	setToken(token) {
+		token = 'Bener ' + token
+		wx.setStorageSync('token', token)
+		this.token = token
 	}
 })
