@@ -15,7 +15,7 @@ App({
 	// 获取token的方法
 	getToken(key) {
 		wx.getStorage({
-			key, // 由调用的实参决定时 token 还是 refresh_token
+			key, // 由调用的实参决定是 token 还是 refresh_token
 			// 获取成功执行的函数
 			success: ({ data }) => {
 				// console.log(data) // 获取到的token

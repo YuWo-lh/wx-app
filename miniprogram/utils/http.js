@@ -20,11 +20,27 @@ http.intercept.request = (params) => {
 }
 
 // 配置响应拦截器
-http.intercept.response = (res) => {
-	// 过滤接口返回的数据
-	console.log(res)
-
-	return res.data
+http.intercept.response = async (res) => {
+	// console.log(res)
+	const { statusCode, data } = res
+	// console.log(statusCode, data)
+	// 判断是不是401报错
+	if (statusCode === 401) {
+		// 获取全局应用实例
+		const app = getApp()
+		// 使用refresh_token 更新token
+		const { code, data: newToken } = await http({
+			url: '/refreshToken',
+			method: 'post',
+			header: {
+				Authorization: app.refresh_token
+			}
+		})
+		if (code !== 10000) return wx.utils.toast('获取数据失败，请稍后重试')
+		app.setToken(newToken.token, newToken.refreshToken) // 更新新的token 和 refresh_token
+	}
+	// 返回的过滤后的数据
+	return data
 }
 
 // 挂载到全局
