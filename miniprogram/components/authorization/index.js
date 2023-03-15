@@ -8,7 +8,7 @@ Component({
 			// 获取当前历史栈（历史记录）
 			const pageStack = getCurrentPages()
 			// console.log(pageStack)
-			// 获取当前页面路径,方便登录成功后返回改页面
+			// 获取当前页面实例
 			const currentPage = pageStack[pageStack.length - 1]
 			// 获取当前页面的路径（route就是路径的字符串）
 			const redirectURL = currentPage.route
